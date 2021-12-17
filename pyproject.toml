@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "regdpp"
+version = "0.1.0"
+description = "Implementation of Bayesian experimental design using regularized determinantal point processes"
+authors = [
+    "Egeny Lagutin <lagutin.em@phystech.edu>",
+    "Mikhail Kuimov"
+]
+license = "MIT"
+readme = "README.md"
+
+homepage = "https://github.com/sverdoot/regularized-dpp"
+repository = "https://github.com/sverdoot/regularized-dpp"
+documentation = "https://github.com/sverdoot/regularized-dpp"
+
+keywords = ["packaging", "dependency", "regdpp", "pyproject.toml"]
+
+
+# Requirements
+[tool.poetry.dependencies]
+python = "~3.9"
+numpy = "^1.21.4"
+pyyml = "^0.0.2"
+black = "^21.12b0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pandas = "^1.3.5"
+dppy = "^0.3.2"
+seaborn = "^0.11.2"
+tqdm = "^4.62.3"
+
+
+[tool.poetry.scripts]
+# poetry = "infer_pyproject.cli:main"
+
+# [build-system]
+# requires = [
+#     "setuptools >= 35.0.2",
+#     "setuptools_scm >= 2.0.0, <3"
+# ]
+# build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target_version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
