@@ -23,6 +23,9 @@ chmod +x **.sh
 
 ## Usage
 
+```bash
+python main.py configs/[dataset_name].yaml
+```
 ## Citing
 
 ```

@@ -1,18 +1,18 @@
-import numpy as np
 # import scs
 import cvxpy as cp
+import numpy as np
 
 from .metrics import A_opt_criterion
 
 
 def cp_D_opt_criterion(cov, A: np.ndarray):
-    res = cp.exp(-1. / cov.shape[0] * cp.log_det(cov + A))
+    res = cp.exp(-1.0 / cov.shape[0] * cp.log_det(cov + A))
     return res
 
 
 def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int) -> np.ndarray:
     def objective(weights):
-        #cov = (np.einsum('ij,ik->ijk', x, x) * weights[:, None, None]).sum()
+        # cov = (np.einsum('ij,ik->ijk', x, x) * weights[:, None, None]).sum()
         cov = [w * np.outer(x_i, x_i) for w, x_i in zip(weights, X)]
         cov = np.sum(cov, 0)
         val = cp_D_opt_criterion(cov, A)
@@ -24,4 +24,3 @@ def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int) -> np.ndarray:
     prob = cp.Problem(cp_ob, constraints)
     prob.solve(solver=cp.MOSEK)
     return weights.value
-

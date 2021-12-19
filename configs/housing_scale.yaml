@@ -1,0 +1,20 @@
+dataset: housing_scale
+
+figpath: figs
+dump_path: dump
+
+shared:
+  min_size_scale: 1
+  max_size_scale: 5
+  n_sizes: 10
+  n_repeat: 50
+  criterion: A
+
+methods:
+  plain_reg_dpp:
+    name: "Reg DPP w/o SDP"
+    sdp: False
+
+  reg_dpp_sdp:
+    name: "Reg DPP w SDP"
+    sdp: True

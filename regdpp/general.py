@@ -1,4 +1,4 @@
 from pathlib import Path
 
-ROOT_DIR = Path.cwd().parent
-DATA_DIR = Path(Path.cwd().parent, 'data')
+ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = Path(ROOT_DIR, "data")
