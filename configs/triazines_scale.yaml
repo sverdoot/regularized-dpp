@@ -9,7 +9,7 @@ shared:
   min_size_scale: 1.5
   max_size_scale: 5
   n_sizes: 10
-  n_repeat: 50
+  n_repeat: 25
   criterion: A
 
 methods:

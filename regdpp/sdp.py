@@ -10,9 +10,9 @@ def cp_D_opt_criterion(cov, A: np.ndarray):
 
 def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int) -> np.ndarray:
     def objective(weights):
-        # cov = (np.einsum('ij,ik->ijk', x, x) * weights[:, None, None]).sum()
-        cov = [w * np.outer(x_i, x_i) for w, x_i in zip(weights, X)]
-        cov = np.sum(cov, 0)
+        cov = cp.multiply(weights[:, None], X).T @ X
+        # cov = [w * np.outer(x_i, x_i) for w, x_i in zip(weights, X)]
+        # cov = np.sum(cov, 0)
         val = cp_D_opt_criterion(cov, A)
         return val
 

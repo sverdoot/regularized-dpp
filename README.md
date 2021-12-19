@@ -44,6 +44,11 @@ S = sampler(X, A, p, k)
 value = A_opt_criterion(X[S].T @ X[S], A, )
 
 ```
+
+<!-- ## Example
+
+![](./figs/mg_scale.pdf) -->
+
 ## Citing
 
 ```

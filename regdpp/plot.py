@@ -38,7 +38,7 @@ def plot_results(
     plt.title(f"dataset {dataset}")
     plt.legend()
     if savepath:
-        plt.savefig((savepath))
+        plt.savefig(savepath)
         plt.close()
     elif show:
         plt.show()
