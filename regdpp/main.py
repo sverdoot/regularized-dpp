@@ -6,12 +6,13 @@ import numpy as np
 import scipy as sp
 import scipy.linalg
 import yaml
+from matplotlib import pyplot as plt
 from tqdm import tqdm, trange
 
 from regdpp.general import DATA_DIR, ROOT_DIR
 from regdpp.metrics import A_opt_criterion
 from regdpp.plot import plot_results
-from regdpp.sample import RegDPP
+from regdpp.sample import SamplerRegistry
 from regdpp.sdp import get_optimal_weights
 from regdpp.utils import load_libsvm_data
 
@@ -34,29 +35,34 @@ def main(config):
     )
     n_repeat = shared["n_repeat"]
     criteria = defaultdict(lambda: np.empty((len(k_range), n_repeat)))
+    times = dict()
+
+    A = 1.0 / n * np.eye(d)
 
     for method, params in config["methods"].items():
         print(params["name"])
+        target = params["target"]
+        sampler = SamplerRegistry.create_sampler(target)
         for k_id, k in tqdm(list(enumerate(k_range))):
             print(f"Looking for subset of size {k}")
-            A = 1.0 / n * np.eye(d)
 
-            if "reg_dpp" in method:
-                sampler = RegDPP()
-                if params["sdp"]:
-                    p = get_optimal_weights(X, A, k)
-                else:
-                    p = np.ones(n) * k / n
+            if params["sdp"]:
+                p = get_optimal_weights(X, A, k)
             else:
-                raise KeyError("sampler undefined")
+                p = np.ones(n) * k / n
 
-            for rep_id in trange(n_repeat):
-                S = sampler(X, A, p)
+            for rep_id in range(n_repeat):
+                S = sampler(X, A, p, k)
 
                 X_S = X[S]
                 subset_cov = X_S.T @ X_S
                 A_optimal_criterium = A_opt_criterion(subset_cov, A)
                 criteria[params["name"]][k_id, rep_id] = A_optimal_criterium
+        sampler.time_cnts = np.array(sampler.time_cnts).reshape((len(k_range), n_repeat))
+        if sampler.__class__.__name__ == "Greedy":
+            # print(sampler.time_cnts[:, 0])
+            sampler.time_cnts = np.cumsum(sampler.time_cnts[:, [0]], axis=0)
+        times[params["name"]] = sampler.time_cnts
         print(
             f"Time of sampling: {np.mean(sampler.time_cnts):.3f} +- {1.96 * np.std(sampler.time_cnts):.3f}"
         )
@@ -65,9 +71,33 @@ def main(config):
         criteria,
         k_range,
         d,
+        ylabel="A-optimality value",
+        ylim=config["ylim"],
         dataset=config["dataset"],
         savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}.pdf'),
     )
+
+    plot_results(
+        times,
+        k_range,
+        d,
+        ylabel="Wall time",
+        dataset=config["dataset"],
+        yscale="log",
+        savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_time.pdf'),
+    )
+
+    cov = X.T @ X
+    baseline = np.array([A_opt_criterion(k / n * cov, A) for k in k_range])
+    criteria = {
+        key: criteria[config["methods"][key]["name"]] / baseline[:, None]
+        for key in ["plain_reg_dpp", "reg_dpp_sdp"]
+    }
+    fig = plot_results(criteria, k_range, d, dataset=config["dataset"])
+    plt.ylabel(r"$f_A(X_S^{\top}X_S)/f_A(\frac{k}{n}\Sigma_X)$")
+    plt.axhline(y=1.0, color="black", linestyle="--")
+    plt.savefig(Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_baseline.pdf'))
+    plt.close()
 
 
 if __name__ == "__main__":

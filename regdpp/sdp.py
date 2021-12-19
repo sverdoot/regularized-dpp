@@ -2,8 +2,6 @@
 import cvxpy as cp
 import numpy as np
 
-from .metrics import A_opt_criterion
-
 
 def cp_D_opt_criterion(cov, A: np.ndarray):
     res = cp.exp(-1.0 / cov.shape[0] * cp.log_det(cov + A))

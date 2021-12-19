@@ -3,18 +3,37 @@ dataset: mg_scale
 figpath: figs
 dump_path: dump
 
+ylim: [0, 20]
+
 shared:
-  min_size_scale: 1
+  min_size_scale: 1.5
   max_size_scale: 5
   n_sizes: 10
   n_repeat: 50
   criterion: A
 
 methods:
+  greedy:
+    name: "Greedy"
+    target: Greedy
+    sdp: False
+
+  uniform:
+    name: "Uniform"
+    target: Uniform
+    sdp: False
+
+  predictive_length:
+    name: "Predictive length"
+    target: PredictiveLength
+    sdp: False
+
   plain_reg_dpp:
     name: "Reg DPP w/o SDP"
+    target: RegDPP
     sdp: False
 
   reg_dpp_sdp:
     name: "Reg DPP w SDP"
+    target: RegDPP
     sdp: True

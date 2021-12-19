@@ -1,5 +1,4 @@
 from functools import wraps
-from os import PathLike
 from pathlib import Path
 from time import time
 from typing import Union

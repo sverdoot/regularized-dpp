@@ -7,6 +7,8 @@
   - [Citing](#citing)
 
 ## Intro
+This repo provides implementation of the method proposed in "Bayesian experimental design using regularized determinantal point processes" \[[arxiv](https://arxiv.org/pdf/1906.04133.pdf)\]
+
 ## Installation
 
 ```bash
@@ -21,15 +23,30 @@ chmod +x **.sh
 ./get_data.sh
 ```
 
+To obtain optimal weights for method with SDP we use ```cvxpy.MOSEK``` solver, which requires license. The official cite provides academic license. You can try using another solver (e.g. ```cvxpy.SCS```).
+
 ## Usage
 
 ```bash
 python main.py configs/[dataset_name].yaml
 ```
+
+```python
+from regdpp.metrics import A_opt_criterion
+from regdpp.sample import SamplerRegistry
+from regdpp.sdp import get_optimal_weights
+
+n, d = X.shape
+k = 2 * d
+sampler = SamplerRegistry.create_sampler("RegDPP")
+p = get_optimal_weights(X, A, k)
+S = sampler(X, A, p, k)
+value = A_opt_criterion(X[S].T @ X[S], A, )
+
+```
 ## Citing
 
 ```
-
 @InProceedings{pmlr-v108-derezinski20a,
   title = 	 {Bayesian experimental design using regularized determinantal point processes},
   author =       {Derezinski, Michal and Liang, Feynman and Mahoney, Michael},

@@ -1,4 +1,4 @@
-dataset: housing_scale
+dataset: triazines_scale
 
 figpath: figs
 dump_path: dump
