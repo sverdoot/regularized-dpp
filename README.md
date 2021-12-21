@@ -5,6 +5,9 @@
   - [Installation](#installation)
   - [Usage](#usage)
   - [Example](#example)
+      - [mg_scale](#mg_scale)
+      - [bodyfat_scale](#bodyfat_scale)
+      - [space_ga_scale](#space_ga_scale)
   - [Citing](#citing)
 
 ## Intro
@@ -49,22 +52,23 @@ from regdpp.sample import SamplerRegistry
 from regdpp.sdp import get_optimal_weights
 
 n, d = X.shape
-k = 2 * d
-sampler = SamplerRegistry.create_sampler("RegDPP")
-p = get_optimal_weights(X, A, k)
-S = sampler(X, A, p, k)
-value = A_opt_criterion(X[S].T @ X[S], A, )
+k = 2 * d   # size of set of indices to choose
+sampler = SamplerRegistry.create_sampler("RegDPP", **{"sdp"=True})  # define a sampler
+S = sampler(X, A, k)
+value = A_opt_criterion(X[S].T @ X[S], A) # get A-optimality value
 
 ```
 
 ## Example
 
 
-
+#### mg_scale 
 <img src="./figs/mg_scale.png" alt="Dependence of A-optimality value on size $k$" width="350"/>  <img src="./figs/mg_scale_baseline.png" alt="A-optimality value devided by baseline" width="350"/> <img src="./figs/mg_scale_time.png" alt="Time comparison" width="350"/>
-----------
+
+#### bodyfat_scale 
 <img src="./figs/bodyfat_scale.png" alt="Dependence of A-optimality value on size $k$" width="350"/>  <img src="./figs/bodyfat_scale_baseline.png" alt="A-optimality value devided by baseline" width="350"/> <img src="./figs/bodyfat_scale_time.png" alt="Time comparison" width="350"/>
------------
+
+#### space_ga_scale 
 <img src="./figs/space_ga_scale.png" alt="Dependence of A-optimality value on size $k$" width="350"/>  <img src="./figs/space_ga_scale_baseline.png" alt="A-optimality value devided by baseline" width="350"/> <img src="./figs/space_ga_scale_time.png" alt="Time comparison" width="350"/>
 
 
