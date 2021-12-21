@@ -4,6 +4,7 @@
   - [Intro](#intro)
   - [Installation](#installation)
   - [Usage](#usage)
+  - [Example](#example)
   - [Citing](#citing)
 
 ## Intro
@@ -45,9 +46,21 @@ value = A_opt_criterion(X[S].T @ X[S], A, )
 
 ```
 
-<!-- ## Example
+## Example
 
-![](./figs/mg_scale.pdf) -->
+
+
+<img src="./figs/mg_scale.png" alt="Dependence of A-optimality value on size $k$" width="450"/>  <img src="./figs/mg_scale_baseline.png" alt="A-optimality value devided by baseline" width="450"/> <img src="./figs/mg_scale_time.png" alt="Time comparison" width="450"/>
+
+<img src="./figs/bodyfat_scale.png" alt="Dependence of A-optimality value on size $k$" width="450"/>  <img src="./figs/bodyfat_scale_baseline.png" alt="A-optimality value devided by baseline" width="450"/> <img src="./figs/bodyfat_scale_time.png" alt="Time comparison" width="450"/>
+
+<img src="./figs/space_ga_scale.png" alt="Dependence of A-optimality value on size $k$" width="450"/>  <img src="./figs/space_ga_scale_baseline.png" alt="A-optimality value devided by baseline" width="450"/> <img src="./figs/space_ga_scale_time.png" alt="Time comparison" width="450"/>
+
+<!-- ![Dependence of A-optimality value on size $k$](./figs/mg_scale.png)
+
+![A-optimality value devided by baseline](./figs/mg_scale_baseline.png)
+
+![Time comparison](./figs/mg_scale_time.png) -->
 
 ## Citing
 

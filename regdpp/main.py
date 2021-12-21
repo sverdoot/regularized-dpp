@@ -13,7 +13,6 @@ from regdpp.general import DATA_DIR, ROOT_DIR
 from regdpp.metrics import A_opt_criterion
 from regdpp.plot import plot_results
 from regdpp.sample import SamplerRegistry
-from regdpp.sdp import get_optimal_weights
 from regdpp.utils import load_libsvm_data
 
 
@@ -42,17 +41,12 @@ def main(config):
     for method, params in config["methods"].items():
         print(params["name"])
         target = params["target"]
-        sampler = SamplerRegistry.create_sampler(target)
+        sampler = SamplerRegistry.create_sampler(target, **params["params"])
         for k_id, k in tqdm(list(enumerate(k_range))):
             print(f"Looking for subset of size {k}")
 
-            if params["sdp"]:
-                p = get_optimal_weights(X, A, k)
-            else:
-                p = np.ones(n) * k / n
-
             for rep_id in range(n_repeat):
-                S = sampler(X, A, p, k)
+                S = sampler(X, A, k)
 
                 X_S = X[S]
                 subset_cov = X_S.T @ X_S
@@ -60,7 +54,6 @@ def main(config):
                 criteria[params["name"]][k_id, rep_id] = A_optimal_criterium
         sampler.time_cnts = np.array(sampler.time_cnts).reshape((len(k_range), n_repeat))
         if sampler.__class__.__name__ == "Greedy":
-            # print(sampler.time_cnts[:, 0])
             sampler.time_cnts = np.cumsum(sampler.time_cnts[:, [0]], axis=0)
         times[params["name"]] = sampler.time_cnts
         print(
@@ -72,9 +65,9 @@ def main(config):
         k_range,
         d,
         ylabel="A-optimality value",
-        ylim=config["ylim"],
+        ylim=config["ylim"] if config["ylim"] else None,
         dataset=config["dataset"],
-        savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}.pdf'),
+        savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}'),
     )
 
     plot_results(
@@ -84,19 +77,20 @@ def main(config):
         ylabel="Wall time",
         dataset=config["dataset"],
         yscale="log",
-        savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_time.pdf'),
+        savepath=Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_time'),
     )
 
     cov = X.T @ X
     baseline = np.array([A_opt_criterion(k / n * cov, A) for k in k_range])
     criteria = {
-        key: criteria[config["methods"][key]["name"]] / baseline[:, None]
+        config["methods"][key]["name"]: criteria[config["methods"][key]["name"]] / baseline[:, None]
         for key in ["plain_reg_dpp", "reg_dpp_sdp"]
     }
     fig = plot_results(criteria, k_range, d, dataset=config["dataset"])
     plt.ylabel(r"$f_A(X_S^{\top}X_S)/f_A(\frac{k}{n}\Sigma_X)$")
     plt.axhline(y=1.0, color="black", linestyle="--")
-    plt.savefig(Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_baseline.pdf'))
+    fig.tight_layout()
+    plt.savefig(Path(ROOT_DIR, config["figpath"], f'{config["dataset"]}_baseline'))
     plt.close()
 
 

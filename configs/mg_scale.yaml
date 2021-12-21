@@ -16,24 +16,27 @@ methods:
   greedy:
     name: "Greedy"
     target: Greedy
-    sdp: False
+    params: {}
 
   uniform:
     name: "Uniform"
     target: Uniform
-    sdp: False
+    params: {}
+    
 
   predictive_length:
     name: "Predictive length"
     target: PredictiveLength
-    sdp: False
+    params: {}
 
   plain_reg_dpp:
     name: "Reg DPP w/o SDP"
     target: RegDPP
-    sdp: False
+    params:
+      sdp: false
 
   reg_dpp_sdp:
     name: "Reg DPP w SDP"
     target: RegDPP
-    sdp: True
+    params:
+      sdp: true

@@ -5,6 +5,7 @@ declare -a DATASETS=(
     "mpg_scale"
     "housing_scale" 
     "bodyfat_scale"
+    "space_ga_scale"
     )
 
 for dataset in ${DATASETS[@]}

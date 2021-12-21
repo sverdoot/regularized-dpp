@@ -1,13 +1,13 @@
-dataset: mpg_scale
+dataset: space_ga_scale
 
 figpath: figs
 dump_path: dump
 
-ylim: [0, 30]
+ylim: [0, 350]
 
 shared:
   min_size_scale: 1.5
-  max_size_scale: 5
+  max_size_scale: 10 #5
   n_sizes: 10
   n_repeat: 25
   criterion: A
