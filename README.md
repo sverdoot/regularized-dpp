@@ -51,6 +51,9 @@ from regdpp.metrics import A_opt_criterion
 from regdpp.sample import SamplerRegistry
 from regdpp.sdp import get_optimal_weights
 
+# X - n x d data matrix
+# A - d x d precision matrix
+
 n, d = X.shape
 k = 2 * d   # size of set of indices to choose
 sampler = SamplerRegistry.create_sampler("RegDPP", **{"sdp"=True})  # define a sampler
