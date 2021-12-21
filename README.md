@@ -32,8 +32,16 @@ To obtain optimal weights for method with SDP we use ```cvxpy.MOSEK``` solver, w
 ## Usage
 
 ```bash
-python main.py configs/[dataset_name].yaml
+python regdpp/main.py configs/[dataset_name].yaml
 ```
+
+To reproduce all the experiments:
+
+```bash
+python ./runs/run.sh
+```
+
+General usage: 
 
 ```python
 from regdpp.metrics import A_opt_criterion
