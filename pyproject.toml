@@ -32,7 +32,6 @@ cvxpy = "^1.1.17"
 cvxopt = "^1.2.7"
 Mosek = "^9.3.11"
 PyYAML = "^6.0"
-pdf2image = "^1.16.0"
 
 
 [tool.poetry.scripts]

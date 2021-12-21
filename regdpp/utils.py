@@ -4,7 +4,6 @@ from time import time
 from typing import Union
 
 import numpy as np
-from pdf2image import convert_from_path
 
 from .general import DATA_DIR
 
@@ -34,7 +33,3 @@ def load_libsvm_data(name_or_path: Union[str, Path]) -> np.ndarray:
     Y = data[:, :1].astype(float)
 
     return X
-
-
-# def convert_pdf_to_png(path: Union[str, Path]):
-#     convert_from_path(path)[0].save(path, 'PNG')

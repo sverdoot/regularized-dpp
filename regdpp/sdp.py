@@ -1,4 +1,3 @@
-# import scs
 import cvxpy as cp
 import numpy as np
 
@@ -8,11 +7,9 @@ def cp_D_opt_criterion(cov, A: np.ndarray):
     return res
 
 
-def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int) -> np.ndarray:
+def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int, solver="scs") -> np.ndarray:
     def objective(weights):
         cov = cp.multiply(weights[:, None], X).T @ X
-        # cov = [w * np.outer(x_i, x_i) for w, x_i in zip(weights, X)]
-        # cov = np.sum(cov, 0)
         val = cp_D_opt_criterion(cov, A)
         return val
 
@@ -20,5 +17,12 @@ def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int) -> np.ndarray:
     cp_ob = cp.Minimize(objective(weights))
     constraints = [cp.sum(weights) == size, weights <= 1, weights >= 0]
     prob = cp.Problem(cp_ob, constraints)
-    prob.solve(solver=cp.MOSEK)
-    return weights.value
+    if solver == "scs":
+        solver = cp.SCS
+    elif solver == "mosek":
+        solver = cp.MOSEK
+
+    prob.solve(solver=solver)
+    return np.minimum(
+        np.maximum(weights.value, np.zeros(weights.value.shape)), np.ones(weights.value.shape)
+    )
