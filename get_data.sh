@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 declare -a DATASETS=(
     "triazines_scale"
     "mg_scale" 

@@ -1,11 +1,11 @@
 #!/usr/bin/bash
 declare -a DATASETS=(
-    "space_ga_scale"
     # "triazines_scale"
     "mg_scale" 
     # "mpg_scale"
     "housing_scale" 
     "bodyfat_scale"
+    "space_ga_scale"
     )
 
 for dataset in ${DATASETS[@]}

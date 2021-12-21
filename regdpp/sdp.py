@@ -8,8 +8,10 @@ def cp_D_opt_criterion(cov, A: np.ndarray):
 
 
 def get_optimal_weights(X: np.ndarray, A: np.ndarray, size: int, solver="scs") -> np.ndarray:
+    n, d = X.shape
+
     def objective(weights):
-        cov = cp.multiply(weights[:, None], X).T @ X
+        cov = cp.multiply(weights[:, None] @ np.ones((1, d)), X).T @ X
         val = cp_D_opt_criterion(cov, A)
         return val
 
