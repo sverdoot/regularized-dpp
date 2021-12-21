@@ -10,6 +10,9 @@
 ## Intro
 This repo provides implementation of the method proposed in "Bayesian experimental design using regularized determinantal point processes" \[[arxiv](https://arxiv.org/pdf/1906.04133.pdf)\]
 
+You can run a Colab notebook:  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PNC590nFG_8tFvtAnFMwSj5MXsFE3vIF?usp=sharing)
+
+
 ## Installation
 
 ```bash
